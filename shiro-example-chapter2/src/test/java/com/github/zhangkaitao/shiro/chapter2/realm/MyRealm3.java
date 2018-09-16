@@ -4,6 +4,7 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.realm.Realm;
 
 /**
+ * myRealm3： 用户名/密码为zhang/123时成功，且返回身份/凭据为zhang@163.com/123，和myRealm1不同的是返回时的身份变了；
  * <p>User: Zhang Kaitao
  * <p>Date: 14-1-25
  * <p>Version: 1.0

@@ -4,6 +4,7 @@ import org.apache.shiro.authc.*;
 import org.apache.shiro.realm.Realm;
 
 /**
+ * myRealm2： 用户名/密码为wang/123时成功，且返回身份/凭据为wang/123；
  * <p>User: Zhang Kaitao
  * <p>Date: 14-1-25
  * <p>Version: 1.0

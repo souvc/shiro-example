@@ -6,6 +6,7 @@ import org.apache.shiro.realm.Realm;
 import java.util.List;
 
 /**
+ * myRealm1： 用户名/密码为zhang/123时成功，且返回身份/凭据为zhang/123；
  * <p>User: Zhang Kaitao
  * <p>Date: 14-1-25
  * <p>Version: 1.0

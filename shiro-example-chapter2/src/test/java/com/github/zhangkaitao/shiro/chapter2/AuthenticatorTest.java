@@ -19,12 +19,25 @@ import org.junit.Test;
 
 
 /**
+ * Authenticator的职责是验证用户帐号，是Shiro API中身份验证核心的入口点
+ * 如果验证成功，将返回AuthenticationInfo验证信息；此信息中包含了身份及凭证；如果验证失败将抛出相应的AuthenticationException实现。
+ *1、SecurityManager接口继承了Authenticator，另外还有一个ModularRealmAuthenticator实现，其委托给多个Realm进行验证，验证规则通过AuthenticationStrategy接口指定，默认提供的实现：
+ *2、FirstSuccessfulStrategy：只要有一个Realm验证成功即可，只返回第一个Realm身份验证成功的认证信息，其他的忽略；
+ *3、AtLeastOneSuccessfulStrategy：只要有一个Realm验证成功即可，和FirstSuccessfulStrategy不同，返回所有Realm身份验证成功的认证信息；
+ *4、AllSuccessfulStrategy：所有Realm验证成功才算成功，且返回所有Realm身份验证成功的认证信息，如果有一个失败就失败了。
+ *
+ * ModularRealmAuthenticator默认使用AtLeastOneSuccessfulStrategy策略。
+ *
  * <p>User: Zhang Kaitao
  * <p>Date: 14-1-25
  * <p>Version: 1.0
  */
 public class AuthenticatorTest {
 
+    /**
+     * 1、 测试 AllSuccessfulStrategy
+     * AllSuccessfulStrategy：所有Realm验证成功才算成功，且返回所有Realm身份验证成功的认证信息，如果有一个失败就失败了。
+     */
     @Test
     public void testAllSuccessfulStrategyWithSuccess() {
         login("classpath:shiro-authenticator-all-success.ini");
@@ -35,11 +48,19 @@ public class AuthenticatorTest {
         Assert.assertEquals(2, principalCollection.asList().size());
     }
 
+    /**
+     * 2、 测试 AllSuccessfulStrategy 失败的情况
+     * shiro-authenticator-all-fail.ini与shiro-authenticator-all-success.ini不同的配置是使用了securityManager.realms=$myRealm1,$myRealm2；即myRealm验证失败。
+     */
     @Test(expected = UnknownAccountException.class)
     public void testAllSuccessfulStrategyWithFail() {
         login("classpath:shiro-authenticator-all-fail.ini");
     }
 
+    /**
+     * 3、 测试AtLeastOneSuccessfulStrategy
+     * AtLeastOneSuccessfulStrategy：只要有一个Realm验证成功即可，和FirstSuccessfulStrategy不同，返回所有Realm身份验证成功的认证信息；
+     */
     @Test
     public void testAtLeastOneSuccessfulStrategyWithSuccess() {
         login("classpath:shiro-authenticator-atLeastOne-success.ini");
@@ -50,6 +71,10 @@ public class AuthenticatorTest {
         Assert.assertEquals(2, principalCollection.asList().size());
     }
 
+    /**
+     * 4、测试 FirstSuccessfulStrategy
+     * FirstSuccessfulStrategy：只要有一个Realm验证成功即可，只返回第一个Realm身份验证成功的认证信息，其他的忽略；
+     */
     @Test
     public void testFirstOneSuccessfulStrategyWithSuccess() {
         login("classpath:shiro-authenticator-first-success.ini");
@@ -80,6 +105,11 @@ public class AuthenticatorTest {
         Assert.assertEquals(1, principalCollection.asList().size());
     }
 
+
+    /**
+     * 首先通用化登录逻辑
+     * @param configFile
+     */
     private void login(String configFile) {
         //1、获取SecurityManager工厂，此处使用Ini配置文件初始化SecurityManager
         Factory<org.apache.shiro.mgt.SecurityManager> factory =
