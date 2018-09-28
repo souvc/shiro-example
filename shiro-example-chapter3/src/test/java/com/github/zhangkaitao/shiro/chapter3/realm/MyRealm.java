@@ -12,9 +12,18 @@ import org.apache.shiro.subject.PrincipalCollection;
  * <p>User: Zhang Kaitao
  * <p>Date: 14-1-26
  * <p>Version: 1.0
+ *
+ * 此时我们继承AuthorizingRealm而不是实现Realm接口；推荐使用AuthorizingRealm
+ * 这种方式的好处是当只需要身份验证时只需要获取身份验证信息而不需要获取授权信息。
+ * 对于AuthenticationInfo和AuthorizationInfo请参考其Javadoc获取相关接口信息。
  */
 public class MyRealm extends AuthorizingRealm {
 
+    /**
+     * 表示根据用户身份获取授权信息。
+     * @param principals
+     * @return
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
@@ -27,6 +36,12 @@ public class MyRealm extends AuthorizingRealm {
         return authorizationInfo;
     }
 
+    /**
+     * 表示获取身份验证信息；
+     * @param token
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         String username = (String)token.getPrincipal();  //得到用户名

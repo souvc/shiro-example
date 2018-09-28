@@ -9,6 +9,7 @@ import org.apache.shiro.realm.text.IniRealm;
  * <p>User: Zhang Kaitao
  * <p>Date: 14-1-26
  * <p>Version: 1.0
+ * BitAndWildPermissionResolver实现了PermissionResolver接口，并根据权限字符串是否以“+”开头来解析权限字符串为BitPermission或WildcardPermission。
  */
 public class BitAndWildPermissionResolver implements PermissionResolver {
 

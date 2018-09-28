@@ -13,6 +13,9 @@ import org.junit.Test;
  */
 public class AuthorizerTest extends BaseTest {
 
+    /**
+     * 自定义权限校验测试-配置文件
+     */
     @Test
     public void testIsPermitted() {
         login("classpath:shiro-authorizer.ini", "zhang", "123");
@@ -29,6 +32,9 @@ public class AuthorizerTest extends BaseTest {
         Assert.assertTrue(subject().isPermitted("menu:view"));//通过MyRolePermissionResolver解析得到的权限
     }
 
+    /**
+     * 自定义权限校验测试-数据库查询出来的数据
+     */
     @Test
     public void testIsPermitted2() {
         login("classpath:shiro-jdbc-authorizer.ini", "zhang", "123");
@@ -44,10 +50,5 @@ public class AuthorizerTest extends BaseTest {
 
         Assert.assertTrue(subject().isPermitted("menu:view"));//通过MyRolePermissionResolver解析得到的权限
     }
-
-
-
-
-
 
 }

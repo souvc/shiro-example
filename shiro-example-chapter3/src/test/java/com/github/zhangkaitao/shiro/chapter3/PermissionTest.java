@@ -14,6 +14,9 @@ import java.util.Arrays;
  */
 public class PermissionTest extends BaseTest {
 
+    /**
+     * Shiro提供了isPermitted和isPermittedAll用于判断用户是否拥有某个权限或所有权限，也没有提供如isPermittedAny用于判断拥有某一个权限的接口。
+     */
     @Test
     public void testIsPermitted() {
         login("classpath:shiro-permission.ini", "zhang", "123");
@@ -25,6 +28,9 @@ public class PermissionTest extends BaseTest {
         Assert.assertFalse(subject().isPermitted("user:view"));
     }
 
+    /**
+     * 但是失败的情况下会抛出UnauthorizedException异常。
+     */
     @Test(expected = UnauthorizedException.class)
     public void testCheckPermission() {
         login("classpath:shiro-permission.ini", "zhang", "123");
